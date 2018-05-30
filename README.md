@@ -1,3 +1,3 @@
 # Adventure
 Castle Kotlin
-An experiment to learn Kotlin
+- an exercise to learn Kotlin
