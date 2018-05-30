@@ -18,13 +18,13 @@ import Thing
 			    3 to entrance,
 			    4 to tunnel,
 			    999 to  player)
-	var current_room = 3 //Start at entrance
+	var current_room = 3 //Entrance
 
 
 //---Things
 
 	val sword=Thing(1,"a sword","rusty but sharp",2)
-	val lamp=Thing(2,"a lamp","a glowing worm inside",2)
+	val lamp=Thing(2,"a lamp","a glowing worm inside",3)
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp)
@@ -33,6 +33,27 @@ import Thing
 
 fun present(thing: Thing) = (thing.loc==current_room)
 fun have(thing: Thing) = (thing.loc==999)
+fun available(thing: Thing) = (present(thing) or have(thing))
+
+fun inv(){
+   println("You have:")
+   things.forEach {(_,value) -> if (have(value)) value.describe()}
+   println()
+}
+
+fun go(dir: Int){
+   if (dir!=0) {
+	current_room=dir
+	if (available(lamp)){
+	   rooms[current_room]!!.describe()
+           things.forEach {(_,value) -> if (present(value)) value.describe()}
+           println()}
+   	else {println("It's dark!")}
+               }
+
+   else {println("Can't go there!")}
+}
+
 
 fun take(thing: Thing){
 	if (present(thing)) {thing.loc=999;println("Taken.")} else {println("Cant't do that")}
@@ -48,14 +69,16 @@ fun drop(thing: Thing){
 
 fun get_input(){
 	var inn = readLine()!!
-	if (inn=="e") current_room=rooms[current_room]!!.e
-	if (inn=="w") current_room=rooms[current_room]!!.w
-	if (inn=="n") current_room=rooms[current_room]!!.n
-	if (inn=="s") current_room=rooms[current_room]!!.s
+	if (inn=="e") go(rooms[current_room]!!.e)
+	if (inn=="w") go(rooms[current_room]!!.w)
+	if (inn=="n") go(rooms[current_room]!!.n)
+	if (inn=="s") go(rooms[current_room]!!.s)
 	if (inn=="take sword") take(sword)
 	if (inn=="drop sword") drop(sword)
 	if (inn=="take lamp") take(lamp)
 	if (inn=="drop lamp") drop(lamp)
+	if (inn=="look") go(current_room)
+	if (inn=="inv") inv()
 	if (inn=="q") current_room=0 //Go to limbo and quit
 }
 
@@ -69,12 +92,9 @@ println("You have journeyed to Castle Kotlin in search of treasure.")
 println("As you enter, the mighty doors slam shut behind you!")
 println()
 
-while (current_room!=0){
-	rooms[current_room]!!.describe()
-	things.forEach {(_,value) -> if (present(value)) value.describe()}
-	println()
-	get_input()
-	}
+go(current_room) //Start at entrance
+
+while (current_room!=0){get_input()}
 
 println("            Goodbye!")
 println()
