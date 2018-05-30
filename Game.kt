@@ -23,8 +23,8 @@ import Thing
 
 //---Things
 
-	val sword=Thing(1,"a sword","still sharp",2)
-	val lamp=Thing(2,"a lamp","still contains oil",2)
+	val sword=Thing(1,"a sword","rusty but sharp",2)
+	val lamp=Thing(2,"a lamp","contains oil",2)
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp)
@@ -52,7 +52,7 @@ println()
 
 while (current_room!=0){
 	rooms[current_room]!!.describe()
-	for (n in 1..nr_things) if (things[n]!!.loc==current_room) things[n]!!.describe()
+	things.forEach {(_,value) -> if (value.loc==current_room) value.describe()}
 	println()
 	get_input()
 	}
