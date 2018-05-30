@@ -24,7 +24,7 @@ import Thing
 //---Things
 
 	val sword=Thing(1,"a sword","rusty but sharp",2)
-	val lamp=Thing(2,"a lamp","contains oil",2)
+	val lamp=Thing(2,"a lamp","full of oil",2)
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp)
