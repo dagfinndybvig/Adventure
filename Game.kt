@@ -24,11 +24,27 @@ import Thing
 //---Things
 
 	val sword=Thing(1,"a sword","rusty but sharp",2)
-	val lamp=Thing(2,"a lamp","full of oil",2)
+	val lamp=Thing(2,"a lamp","a glowing worm inside",2)
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp)
 	
+//Actions
+
+fun present(thing: Thing) = (thing.loc==current_room)
+fun have(thing: Thing) = (thing.loc==999)
+
+fun take(thing: Thing){
+	if (present(thing)) {thing.loc=999;println("Taken.")} else {println("Cant't do that")}
+}
+
+fun drop(thing: Thing){
+	if (have(thing)) {thing.loc=current_room; println("Dropped.")} else {println("Can't do that")}
+}
+
+
+//The game
+
 
 fun get_input(){
 	var inn = readLine()!!
@@ -36,6 +52,10 @@ fun get_input(){
 	if (inn=="w") current_room=rooms[current_room]!!.w
 	if (inn=="n") current_room=rooms[current_room]!!.n
 	if (inn=="s") current_room=rooms[current_room]!!.s
+	if (inn=="take sword") take(sword)
+	if (inn=="drop sword") drop(sword)
+	if (inn=="take lamp") take(lamp)
+	if (inn=="drop lamp") drop(lamp)
 	if (inn=="q") current_room=0 //Go to limbo and quit
 }
 
@@ -51,7 +71,7 @@ println()
 
 while (current_room!=0){
 	rooms[current_room]!!.describe()
-	things.forEach {(_,value) -> if (value.loc==current_room) value.describe()}
+	things.forEach {(_,value) -> if (present(value)) value.describe()}
 	println()
 	get_input()
 	}
