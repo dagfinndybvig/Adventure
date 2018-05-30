@@ -28,8 +28,7 @@ import Thing
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp)
-	val nr_things = 2
-
+	
 
 fun get_input(){
 	var inn = readLine()!!
