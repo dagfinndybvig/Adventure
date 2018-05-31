@@ -25,13 +25,15 @@ import Thing
 
 	val sword=Thing(1,"a sword","rusty but sharp",2)
 	val lamp=Thing(2,"a lamp","glowing magically",3)
-	val note=Thing(3,"a note signed by Count Kotlin","saying 'Find my medallion and you shall be free'",3)
+	val note=Thing(3,"a note signed by Count Kotlin","saying 'Bring my medallion to invoke my name!'",3)
 	val towel=Thing(4,"a towel","somewhat frayed",999)
+	val medallion=Thing(5,"a medallion","in the likeness of Count Kotlin",4)
 
 	val things = hashMapOf(1 to sword,
 			       2 to lamp,
 			       3 to note,
-			       4 to towel)
+			       4 to towel,
+			       5 to medallion)
 	
 //Actions
 
@@ -72,11 +74,25 @@ fun deal_with(cmd: String, name: String, thing: Thing){
 } 
 
 
+fun kotlin(){
+	println()
+	if (available(medallion) and (current_room==3))	{
+		println("A booming voice declares 'Finally! Thank you and Godspeed!'")
+		println("You are teleported outside the castle, pockets stuffed with emeralds.")}
+	else {
+		println("Booming voice: Who dares to invoke my name under improper conditions?! DIE YOU SCUM!!!")
+		println("Instantly you are reduced to ashes.")
+		println()
+		println("I'm sorry, but you appear to have died horribly...")}
+	println()
+	current_room=0 //Go to Limbo and end
+}
+
 //The game
 
 
 fun get_input(){
-	var inn = readLine()!!
+	var inn = readLine()!!.toLowerCase()
 	if (inn=="e") go(rooms[current_room]!!.e)
 	if (inn=="w") go(rooms[current_room]!!.w)
 	if (inn=="n") go(rooms[current_room]!!.n)
@@ -85,6 +101,8 @@ fun get_input(){
 	deal_with(inn,"lamp",lamp)
 	deal_with(inn,"note",note)
 	deal_with(inn,"towel",towel)
+	deal_with(inn,"medallion",medallion)
+	if (inn=="kotlin") kotlin()
 	if (inn=="look") look()
 	if (inn=="inv") inv()
 	if (inn=="q") current_room=0 //Go to limbo and quit
@@ -104,6 +122,7 @@ go(current_room) //Start at entrance
 
 while (current_room!=0){get_input();println()}
 
-println("            Goodbye!")
+println()
+println("            Goodbye, Adventurer!")
 println()
 }
