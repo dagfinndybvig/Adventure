@@ -24,10 +24,14 @@ import Thing
 //---Things
 
 	val sword=Thing(1,"a sword","rusty but sharp",2)
-	val lamp=Thing(2,"a lamp","a glowing worm inside",3)
+	val lamp=Thing(2,"a lamp","glowing magically",3)
+	val note=Thing(3,"a note signed by Count Kotlin","saying 'Find my medallion and you shall be free'",3)
+	val towel=Thing(4,"a towel","somewhat frayed",999)
 
 	val things = hashMapOf(1 to sword,
-			       2 to lamp)
+			       2 to lamp,
+			       3 to note,
+			       4 to towel)
 	
 //Actions
 
@@ -35,10 +39,13 @@ fun present(thing: Thing) = (thing.loc==current_room)
 fun have(thing: Thing) = (thing.loc==999)
 fun available(thing: Thing) = (present(thing) or have(thing))
 
+fun look(){go(current_room)}
+
 fun inv(){
-   println("You have:")
-   things.forEach {(_,value) -> if (have(value)) value.describe()}
    println()
+   things.forEach {(_,value) -> if (have(value)) value.describe_inv()}
+   println("   - yourself; a computer scientist")
+	println()
 }
 
 fun go(dir: Int){
@@ -55,13 +62,14 @@ fun go(dir: Int){
 }
 
 
-fun take(thing: Thing){
-	if (present(thing)) {thing.loc=999;println("Taken.")} else {println("Cant't do that")}
-}
+fun take(thing: Thing){thing.loc=999;println("Taken.")}
+fun drop(thing: Thing){thing.loc=current_room; println("Dropped.")}
 
-fun drop(thing: Thing){
-	if (have(thing)) {thing.loc=current_room; println("Dropped.")} else {println("Can't do that")}
-}
+fun deal_with(cmd: String, name: String, thing: Thing){
+	if ((cmd==name) and (present(thing))) {take(thing);return}
+	if ((cmd==name) and (have(thing))) {drop(thing);return}
+	if (cmd==name) println("Can't do that!")
+} 
 
 
 //The game
@@ -73,11 +81,11 @@ fun get_input(){
 	if (inn=="w") go(rooms[current_room]!!.w)
 	if (inn=="n") go(rooms[current_room]!!.n)
 	if (inn=="s") go(rooms[current_room]!!.s)
-	if (inn=="take sword") take(sword)
-	if (inn=="drop sword") drop(sword)
-	if (inn=="take lamp") take(lamp)
-	if (inn=="drop lamp") drop(lamp)
-	if (inn=="look") go(current_room)
+	deal_with(inn,"sword",sword)
+	deal_with(inn,"lamp",lamp)
+	deal_with(inn,"note",note)
+	deal_with(inn,"towel",towel)
+	if (inn=="look") look()
 	if (inn=="inv") inv()
 	if (inn=="q") current_room=0 //Go to limbo and quit
 }
@@ -94,7 +102,7 @@ println()
 
 go(current_room) //Start at entrance
 
-while (current_room!=0){get_input()}
+while (current_room!=0){get_input();println()}
 
 println("            Goodbye!")
 println()
