@@ -110,7 +110,7 @@ fun get_input(){
 
 
 fun main(args : Array<String>){
-println("\u001b[2J")
+println("\u001b[2J") //Clear screen
 println()
 println("--- WELCOME TO ADVENTURE ---")
 println()
