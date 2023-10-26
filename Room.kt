@@ -1,4 +1,4 @@
-//Room.kt
+//Room.kt test
 
 class Room(val number : Int, val name : String, val desc: String, val e: Int, val w: Int, val n: Int, val s: Int){
 
